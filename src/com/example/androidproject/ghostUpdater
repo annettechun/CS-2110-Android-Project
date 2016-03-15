@@ -1,0 +1,48 @@
+package com.example.androidproject;
+
+import android.os.AsyncTask;
+import android.util.Log;
+
+	public class ghostUpdater extends AsyncTask<Void, Void, Void> {
+		
+		private static final String TAG = null;
+		MovementGamePanel gs;
+		public ghostUpdater (MovementGamePanel gamescreen) {
+			gs = gamescreen;
+		}
+		
+		protected void onPreExecute() {
+			// invoked by UI thread, so you can access the display here 
+		}
+		
+		protected void onProgressUpdate(Void... args) {
+			// invoked by UI thread, so you can access the display here
+			// requested by worker thread calling publishProgress
+			gs.invalidate();
+			
+		}
+		protected void onPostExecute(Void returnValue) {
+			// invoked by UI thread, so you can access the display here
+			// requested by the doInBackground method returning
+		}
+		protected void onCancelled() {
+			// invoked by UI thread, so you can access the display here
+			// happens if someone uses .cancel() to stop this thread early
+			// either onCancelled or onPostExecute is called, but not both
+		}
+		@Override
+		protected Void doInBackground(Void... params) {
+			while(!this.isCancelled()) {
+				 Log.d(TAG, "In the thread: ");
+				publishProgress();
+				try {
+					Thread.sleep(50);
+				}
+				catch (InterruptedException e) {
+					break;
+				}
+			}
+			return null;
+		}
+	}
+
