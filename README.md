@@ -4,49 +4,11 @@ Software Development Methods
 Ghost Hunter
 Your task is to develop a game for the Android… let your creativity run wild…!
 
-Specific Weeks
-Week 1 Tasks (Week 1 submissions are made on Collab by Sunday at 11:55pm)
-
-Weekly Tasks beyond Week 1
-
-Weekly submissions beyond Week 1 (All submissions are made on Collab by Sunday at 11:55pm of that week)
-
-Find your teammates!
-If you are in lab 100: external link: http://www.cs.virginia.edu/~nb3f/CS2110/AndroidProject/CS2110-Fall14-Lab100-ProjectGroups.htm
-If you are in lab 101: external link: http://www.cs.virginia.edu/~nb3f/CS2110/AndroidProject/CS2110-Fall14-Lab101-ProjectGroups.htm
-If you are in lab 102: external link: http://www.cs.virginia.edu/~nb3f/CS2110/AndroidProject/CS2110-Fall14-Lab102-ProjectGroups.htm
-If you are in lab 103: external link: http://www.cs.virginia.edu/~nb3f/CS2110/AndroidProject/CS2110-Fall14-Lab103-ProjectGroups.htm
-Process vs Product
-The project is worth 10% of your final grade. Half of that will be for process, half for product.
-
-Process will be evaluated via four metrics:
-
-TA observation of your team dynamics during each week's lab for the project duration
-Weekly Team progress reports
-Weekly Team member progress reports
-Documentation (report) and final project presentation (in lab)
-Product will be evaluated based on the functionality you implement; see below.
-
-It is possible that team members will receive different grades for two reasons:
-
-Part of the process grade is individual (the weekly team member progress reports - see "Individual progress report" below)
-If reports reliably indicate that some person did a disproportionately high or low percentage of the work, they will receive a correspondingly high or low percentage of the points.
-Process Details and Reporting
-Each member of the team serves in two roles. Primarily you are all part of the development team writing code to build an app. Secondarily, you each are responsible for one of the following:
-
 Project Manager should ask “(how) does this fit into our product?”
 Software Architect should ask “(how) will this fit into our code design?”
 User Interface Designer should ask “(how) will the user see this?”
 Quality Assurance Manager should ask “(how) do we know it doesn't break something?”
 Note, a person as responsibility to see X is done well (X is one of the roles above), NOT that this person does all of X. Everyone codes! If your team consists of 5 members, two people can take on the same role (but not the Project Manager role - only one person should be responsible for this role.) If your team consists of 3 members, one person should take on two roles.
-
-Each week you will each need to fill out a brief form describing how the team is functioning ("Individual progress report") and one of you (usually the project manager) will also need to report on the process of the project as a whole ("Team progress report").
-
-Team progress report and story backlog
-Individual progress report
-Each week's reports will become active Monday and last until the next one becomes active. If you miss one there is no way to roll back time and add it later.
-
-Details on documentation and final presentations will be announced later.
 
 Required Functionality
 Have a splash screen noting at least
