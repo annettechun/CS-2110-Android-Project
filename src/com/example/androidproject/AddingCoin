@@ -1,0 +1,147 @@
+package com.example.androidproject;
+
+import info.androidhive.androidsplashscreentimer.Droid;
+
+import java.util.ArrayList;
+import java.util.Timer;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+
+public class AddingCoin extends View {
+
+	Bitmap bitmap;
+
+	int a = -1;
+
+	ArrayList<Integer> b = new ArrayList<Integer>();
+
+	Coin coin3;
+	Coin coin5;
+
+	static ArrayList<Coin> threeCoinList;
+	static ArrayList<Coin> fiveCoinList;
+
+	public AddingCoin(Context context) {
+		super(context);
+		init();
+	}
+
+	public AddingCoin(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init();
+	}
+
+	public AddingCoin(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		init();
+	}
+
+	private void init() {
+		threeCoinList = new ArrayList<Coin>();
+		for (int i = 0; i< 4; ++i){
+			if (MovementGamePanel.getDroid().collidesWith(AddingGhost.blueGhostList.get(i)) == true) {
+				Coin coin3 = new Coin (0,0, true, BitmapFactory.decodeResource(getResources(),R.drawable.threecoin));
+				threeCoinList.add(coin3);
+			}
+		}
+		fiveCoinList = new ArrayList<Coin>();
+		for (int i = 0; i< 4; ++i){
+			if (MovementGamePanel.getDroid().collidesWith(AddingGhost.blueGhostList.get(i)) == true) {
+				Coin coin5 = new Coin (0,0, false, BitmapFactory.decodeResource(getResources(),R.drawable.fivecoin));
+				fiveCoinList.add(coin5);
+			}
+		}
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+
+		super.onDraw(canvas);
+		Paint p = new Paint();
+
+		for( Coin c1 : threeCoinList) {
+			//y coordinate
+			if (c1.getY() > canvas.getHeight()){
+				c1.setY(0);
+				c1.setX((int)(Math.random() * (canvas.getWidth()-180)+ 1));
+				if (a != -1){
+					int c = Math.abs(c1.getX() - a);
+					while (c < 128){
+						c1.setX((int)((canvas.getWidth()-180)+ 1));
+						c = Math.abs(c1.getX() - a);
+					}
+				}	
+			}	
+			else{
+				c1.setY(c1.getY()+10);
+			}
+			if (c1.getX() == 0){
+				c1.setX((int)(Math.random() * (canvas.getWidth()-180)+ 1));
+				if (a != -1){
+					int c = Math.abs(c1.getX() - a);
+					while (c < 128){
+						c1.setX((int)(Math.random() * (canvas.getWidth()-180)+ 1));
+						c = Math.abs(c1.getX() - a);
+					}
+				}	
+			}
+			a = c1.getX();
+			canvas.drawBitmap(c1.getBitmap(), c1.getX(), c1.getY(), p);
+		}
+
+		for( Coin c2 : fiveCoinList) {
+			//y coordinate
+			if (c2.getY() > canvas.getHeight()){
+				c2.setY(0);
+				c2.setX((int)(Math.random() * (canvas.getWidth()-180)+ 1));
+				if (b.size() != 0){
+					for (int i = 0; i < b.size(); i++){
+						int c = Math.abs(c2.getX() - b.get(i));
+						while (c < 128){
+							c2.setX((int)(Math.random() * (canvas.getWidth()-180)+ 1));
+							c = Math.abs(c2.getX() - a);
+						}
+					}	
+				}	
+			}
+			else{
+				c2.setY(c2.getY()+10);
+			}
+			if (c2.getX() == 0){
+
+				c2.setX((int)(Math.random() * (canvas.getWidth()-180)+ 1));
+				if (b.size() != 0){
+
+					for (int i = 0; i < b.size(); i++){
+
+						int c = Math.abs(c2.getX() - b.get(i));
+						while (c < 128){
+							c2.setX((int)(Math.random() * (canvas.getWidth()-180)+ 1));
+							c = Math.abs(c2.getX() - a);
+						}
+					}	
+				}
+			}
+
+			b.add(c2.getX());
+			canvas.drawBitmap(c2.getBitmap(), c2.getX(), c2.getY(), p);
+		}
+
+		b.clear();
+		invalidate(); //makes it keep going
+	}
+
+	private Context getApplicationContext() {
+		// TODO Auto-generated method stub
+		return null;
+	}	
+}
