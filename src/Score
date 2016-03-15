@@ -1,0 +1,24 @@
+public class Score implements Comparable<Score> {
+	private String scoreDate;
+	public int scoreNum;
+	
+	public Score(String date, int num){
+	    scoreDate=date;
+	    scoreNum=num;
+	}
+	@Override
+	public int compareTo(Score s) {
+		// TODO Auto-generated method stub
+		if(s.scoreNum>this.scoreNum)
+			return 1;
+		else if(s.scoreNum<this.scoreNum)
+			return -1;
+		else
+			return 0;
+	}
+	public String getScoreText()
+	{
+	    return scoreDate+" - "+scoreNum;
+	}
+
+}
