@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    
+    tools:context="com.example.androidproject.MainActivity" 
+	>
+    
+    
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/main_background" />
+
+    
+    
+    <View 
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+    	android:layout_width="300dp"
+        android:layout_height="600dp"
+    	android:id="@+id/dummyview"
+    	/>
+    	
+    
+
+    <LinearLayout
+        android:id="@+id/linearlayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical" 
+        android:layout_below="@id/dummyview"
+        
+>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:onClick="clickPlay"
+            android:text="Play" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="150dp"
+             android:textColor="#ffffff"
+            android:layout_height="wrap_content"
+            android:text="Instructions" 
+            android:onClick="clickInstructions"/>
+    
+       
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="150dp"
+             android:textColor="#ffffff"
+            android:layout_height="wrap_content"
+            android:text="High Scores" 
+            android:onClick="clickHighScores"
+            />
+    </LinearLayout>
+
+</RelativeLayout>
