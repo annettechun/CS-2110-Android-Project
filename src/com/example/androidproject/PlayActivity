@@ -1,0 +1,163 @@
+package com.example.androidproject;
+import android.widget.TextView;
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.Window;
+import android.view.WindowManager;
+import android.content.SharedPreferences;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+public class PlayActivity extends Activity {
+	private SharedPreferences gamePrefs;
+	public static final String GAME_PREFS = "ScoreFile";
+	ghostUpdater loop;
+	public TextView scoreText;
+	boolean gamePause;
+	public int currentScore;
+	//ArrayList
+	
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		setContentView(R.layout.activity_play);
+		if(savedInstanceState!=null){
+			//exScore = savedInstanceState.getInt("score");
+			//scoreText.setText("Score: "+ exScore);
+		}
+		else{
+		    Bundle extras = getIntent().getExtras();
+		}
+		gamePrefs = getSharedPreferences(GAME_PREFS, 0);
+		scoreText = (TextView)findViewById(R.id.score);
+		scoreText.setText("Score: 0");
+		Log.d(TAG, "View added");
+		
+		final Handler handler = new Handler();
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				MovementGamePanel panel = (MovementGamePanel) findViewById(R.id.gameScreen);
+				currentScore=panel.getExScore();
+				scoreText.setText("Score: "+ currentScore);
+				gamePause = panel.getGameOver();
+				if(gamePause==true)
+					onPause();
+				setHighScore();
+				gamePrefs = getSharedPreferences(GAME_PREFS, 0);
+				handler.postDelayed(this, 200);		
+			}
+		});
+		
+	}
+	
+	public boolean onTouchEvent(MotionEvent event){
+		MovementGamePanel panel = (MovementGamePanel) findViewById(R.id.gameScreen);		
+		return panel.onTouchEvent(event);
+
+	}
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.play, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	//The following is a character that moves.
+
+	private static final String TAG = MainActivity.class.getSimpleName();
+
+
+	@Override
+
+	protected void onPause() {
+		Log.d(TAG, "Pausing...");
+		super.onPause();
+		loop.cancel(true);
+	}
+
+	@Override
+
+	protected void onDestroy() {
+		//setHighScore();
+		Log.d(TAG, "Destroying...");
+		super.onDestroy();
+	}
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		//int exScore = getScore();
+		//savedInstanceState.putInt("score", exScore);  
+		super.onSaveInstanceState(savedInstanceState);
+		}
+
+	private void setHighScore(){
+		List<Score> scoreStrings = new ArrayList<Score>();
+
+		if(currentScore>0){
+			SharedPreferences.Editor editScore = gamePrefs.edit();   
+			DateFormat dateForm = new SimpleDateFormat("dd MMMM yyyy");
+			String dateOutput = dateForm.format(new Date());
+			String scores = gamePrefs.getString("highScores", "");
+			String[] exScores = scores.split("\\|");
+
+			if(scores.length()>0){ //Have existing scores
+				for(String e:exScores){
+					String[] parts = e.split(" - ");
+					scoreStrings.add(new Score(parts[0], Integer.parseInt(parts[1])));
+				}
+				
+				Score newScore = new Score(dateOutput, currentScore);
+				scoreStrings.add(newScore);
+				Collections.sort(scoreStrings);
+				StringBuilder scoreBuild = new StringBuilder("");
+				for(int s=0; s<scoreStrings.size(); s++){
+					if(s>=10) 
+						break;//only want ten
+					if(s>0) 
+						scoreBuild.append("|");//pipe separate the score strings
+					scoreBuild.append(scoreStrings.get(s).getScoreText());
+				}
+				editScore.putString("highScores", scoreBuild.toString());
+				editScore.commit();
+			}
+			else{ //no existing scores, write to prefs
+				editScore.putString("highScores", "" + dateOutput + " - " + currentScore);
+				editScore.commit();
+			}
+		}
+	}
+	@Override
+
+	protected void onStop() {
+		//setHighScore();
+		Log.d(TAG, "Stopping...");
+		super.onStop();
+
+
+	}  //end character that moves
+}
