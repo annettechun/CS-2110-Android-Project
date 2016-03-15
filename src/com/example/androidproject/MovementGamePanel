@@ -1,0 +1,173 @@
+package com.example.androidproject;
+
+import java.util.ArrayList;
+
+import info.androidhive.androidsplashscreentimer.Droid;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.SurfaceView;
+import android.view.View;
+import android.widget.TextView;
+
+public class MovementGamePanel extends SurfaceView {
+	private static final String TAG = MovementGamePanel.class.getSimpleName();
+	private MovementThread thread;
+	private static Droid droid;
+	private AddingGhost ghost;
+	private Ghost ghost1;
+	//
+	private AddingCoin coin;
+	private Coin coin1;
+	//
+	public static int exScore = 0;
+	public boolean addCoin = false;
+	public TextView scoreText;
+	public boolean gameOver = false;
+	public boolean entered = false;
+	public boolean entered2 = false;
+	Context c;
+
+	public MovementGamePanel(Context context) {
+		super(context);
+		init(context);
+	}
+
+	private void init(Context context) {
+		setWillNotDraw(false);
+		setZOrderOnTop(true);
+		// scoreText =
+		// (TextView)((PlayActivity)context).findViewById(R.id.score);
+		getHolder().setFormat(PixelFormat.TRANSLUCENT);
+		droid = new Droid(BitmapFactory.decodeResource(getResources(),
+				R.drawable.ic_launcher), 500, 550);
+		ghost = new AddingGhost(context);
+		setFocusable(true);
+
+	}
+
+	public MovementGamePanel(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init(context);
+	}
+
+	public int getExScore() {
+		return this.exScore;
+	}
+
+	public MovementGamePanel(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		init(context);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			// delegating event handling to the droid
+			droid.handleActionDown((int) event.getX(), (int) event.getY());
+
+		}
+		if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			if (droid.isTouched()) {
+				// the droid was picked up and is being dragged
+				droid.setX((int) event.getX());
+				droid.setY((int) event.getY());
+			}
+		}
+		if (event.getAction() == MotionEvent.ACTION_UP) {
+			// touch was released
+			if (droid.isTouched()) {
+				droid.setTouched(false);
+			}
+		}
+		return true;
+
+	}
+
+	public boolean getGameOver() {
+		return this.gameOver;
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		droid.draw(canvas);
+		ghost.draw(canvas);
+		/* coin.draw(canvas); */
+		invalidate();
+		if (AddingGhost.blueGhostList.size() < 4) {
+			AddingGhost.blueGhostList.add(new Ghost(
+					(int) (Math.random() * (canvas.getWidth())), 0, false,
+					BitmapFactory.decodeResource(getResources(),
+							R.drawable.blueghost)));
+		}
+
+		for (int i = 0; i < AddingGhost.blueGhostList.size(); ++i) {
+			// new AddingGhost(null).draw(canvas);
+			if (getDroid().collidesWith(AddingGhost.blueGhostList.get(i)) == true) {
+				exScore++;
+				addCoin = true;
+				AddingGhost.blueGhostList.remove(i);
+
+			}
+		}
+
+		if (addCoin == true) {
+
+			Ghost coin5 = new Ghost(0, 0, false, BitmapFactory.decodeResource(
+					getResources(), R.drawable.fivecoin));
+			AddingGhost.coinFiveList.add(coin5);
+
+			addCoin = false;
+		}
+		for (int i = 0; i < AddingGhost.coinFiveList.size(); ++i) {
+
+			// new AddingGhost(null).draw(canvas);
+			if (getDroid().collidesWith(AddingGhost.coinFiveList.get(i)) == true) {
+				exScore = exScore + 5;
+				AddingGhost.coinFiveList.remove(i);
+
+			}
+		}
+
+		for (int i = 0; i < AddingGhost.redGhostList.size(); ++i) {
+
+			if (droid.collidesWith(AddingGhost.redGhostList.get(i)) == true) {
+				gameOver = true;// game over
+
+			}
+
+		}
+
+		if (exScore > 25 && entered == false) {
+			AddingGhost.redGhostList.add(new Ghost(
+					(int) (Math.random() * (canvas.getWidth())), 0, false,
+					BitmapFactory.decodeResource(getResources(),
+							R.drawable.ghost1)));
+			entered = true;
+		}
+
+		if (exScore > 50 && entered2 == false) {
+			AddingGhost.redGhostList.add(new Ghost(
+					(int) (Math.random() * (canvas.getWidth())), 0, false,
+					BitmapFactory.decodeResource(getResources(),
+							R.drawable.ghost1)));
+			entered2 = true;
+		}
+
+	}
+
+	public static Droid getDroid() {
+		return droid;
+	}
+
+	public void setDroid(Droid droid) {
+		this.droid = droid;
+	}
+
+}
